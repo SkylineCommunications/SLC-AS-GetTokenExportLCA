@@ -87,7 +87,7 @@ namespace SLCASGetTokenExportLCA
 				var connectionId = GetFromWebAPIConnectionID();
 
 				var token = GetTokenToExportLCA(connectionId, _lcaID, _lcaVersion);
-				engine.GenerateInformation($"Token to export LCA:{Environment.NewLine}{token}");
+				engine.GenerateInformation($"Token to export LCA: {token}");
 			}
 			catch (Exception e)
 			{

@@ -63,9 +63,9 @@ namespace SLCASGetTokenExportLCA.Dataclasses
 				},
 			};
 			var endpoint = $"{WebAPIOrigin}/api/v1/internal.asmx/ExportApplication";
-			var response = await SendWebAPIRequest<TokenInfo>(endpoint, request);
+			var response = await SendWebAPIRequest<string>(endpoint, request);
 
-			return response.Token;
+			return response;
 		}
 
 		public async Task<T> SendWebAPIRequest<T>(string endpoint, object request)
@@ -142,8 +142,5 @@ namespace SLCASGetTokenExportLCA.Dataclasses
 		public string Connection { get; set; }
 	}
 
-	internal sealed class TokenInfo
-	{
-		public string Token { get; set; }
-	}
+	
 }
