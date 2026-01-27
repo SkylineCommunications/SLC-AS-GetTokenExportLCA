@@ -1,6 +1,6 @@
 /*
 ****************************************************************************
-*  Copyright (c) 2025,  Skyline Communications NV  All Rights Reserved.    *
+*  Copyright (c) 2026,  Skyline Communications NV  All Rights Reserved.    *
 ****************************************************************************
 
 By using this script, you expressly agree with the usage terms and
@@ -45,17 +45,16 @@ Revision History:
 
 DATE		VERSION		AUTHOR			COMMENTS
 
-16/10/2025	1.0.0.1		PDO, Skyline	Initial version
+27/01/2026	1.0.0.1		RDU, Skyline	Initial version
 ****************************************************************************
 */
 
-namespace SLCASGetTokenExportLCA
+namespace GetTokenExportLCA
 {
 	using System;
-	using System.Collections.Generic;
 	using System.Threading.Tasks;
 
-	using SLCASGetTokenExportLCA.Dataclasses;
+	using GetTokenExportLCA.Dataclasses;
 
 	using Skyline.DataMiner.Automation;
 
@@ -67,6 +66,7 @@ namespace SLCASGetTokenExportLCA
 		private WebAPI _webAPI;
 		private string _lcaID;
 		private int _lcaVersion;
+
 		/// <summary>
 		/// The script entry point.
 		/// </summary>
@@ -131,6 +131,5 @@ namespace SLCASGetTokenExportLCA
 
 			return true;
 		}
-
 	}
 }

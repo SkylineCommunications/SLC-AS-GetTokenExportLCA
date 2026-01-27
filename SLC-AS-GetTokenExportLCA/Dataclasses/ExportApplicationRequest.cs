@@ -1,4 +1,4 @@
-﻿namespace SLCASGetTokenExportLCA.Dataclasses
+﻿namespace GetTokenExportLCA.Dataclasses
 {
 	using Newtonsoft.Json;
 

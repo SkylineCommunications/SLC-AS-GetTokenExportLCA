@@ -1,4 +1,4 @@
-namespace SLCASGetTokenExportLCA.Dataclasses
+namespace GetTokenExportLCA.Dataclasses
 {
 	using System;
 	using System.Net.Http;
@@ -141,6 +141,4 @@ namespace SLCASGetTokenExportLCA.Dataclasses
 	{
 		public string Connection { get; set; }
 	}
-
-	
 }
