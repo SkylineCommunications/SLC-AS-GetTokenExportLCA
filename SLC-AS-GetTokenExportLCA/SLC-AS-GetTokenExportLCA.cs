@@ -63,9 +63,14 @@ namespace GetTokenExportLCA
 	/// </summary>
 	public class Script
 	{
+		private const string TypeLCA = "LCA";
+		private const string TypeDashboard = "Dashboard";
+
 		private WebAPI _webAPI;
 		private string _lcaID;
 		private int _lcaVersion;
+		private string _dashboardName;
+		private string _dashboardFolder;
 
 		/// <summary>
 		/// The script entry point.
@@ -78,16 +83,34 @@ namespace GetTokenExportLCA
 				var connection = engine.GetUserConnection();
 				_webAPI = new WebAPI(connection, engine);
 
-				if (!TryImportLCAID(engine) || !TryImportLCAVersion(engine))
+				var exportType = GetExportType(engine);
+
+				if (exportType == TypeDashboard)
 				{
-					engine.GenerateInformation("Invalid input parameters.");
-					return;
+					if (!TryImportDashboardName(engine))
+					{
+						engine.GenerateInformation("Invalid input parameters.");
+						return;
+					}
+
+					var connectionId = GetFromWebAPIConnectionID();
+
+					var token = GetTokenToExportDashboard(connectionId, _dashboardName, _dashboardFolder);
+					engine.GenerateInformation($"Token to export Dashboard: {token}");
 				}
+				else
+				{
+					if (!TryImportLCAID(engine) || !TryImportLCAVersion(engine))
+					{
+						engine.GenerateInformation("Invalid input parameters.");
+						return;
+					}
 
-				var connectionId = GetFromWebAPIConnectionID();
+					var connectionId = GetFromWebAPIConnectionID();
 
-				var token = GetTokenToExportLCA(connectionId, _lcaID, _lcaVersion);
-				engine.GenerateInformation($"Token to export LCA: {token}");
+					var token = GetTokenToExportLCA(connectionId, _lcaID, _lcaVersion);
+					engine.GenerateInformation($"Token to export LCA: {token}");
+				}
 			}
 			catch (Exception e)
 			{
@@ -108,6 +131,47 @@ namespace GetTokenExportLCA
 		private string GetTokenToExportLCA(string connectionId, string lcaId, int lcaVersion)
 		{
 			return _webAPI.GetTokenToExportLCA(connectionId, lcaId, lcaVersion).GetAwaiter().GetResult();
+		}
+
+		private string GetTokenToExportDashboard(string connectionId, string dashboardName, string dashboardFolder)
+		{
+			return _webAPI.GetTokenToExportDashboard(connectionId, dashboardName, dashboardFolder).GetAwaiter().GetResult();
+		}
+
+		private static string GetExportType(IEngine engine)
+		{
+			string type = engine.GetScriptParam(12)?.Value;
+			if (string.Equals(type, TypeDashboard, StringComparison.OrdinalIgnoreCase))
+			{
+				return TypeDashboard;
+			}
+
+			return TypeLCA;
+		}
+
+		private bool TryImportDashboardName(IEngine engine)
+		{
+			string name = engine.GetScriptParam(10).Value;
+			if (string.IsNullOrWhiteSpace(name))
+			{
+				return false;
+			}
+
+			_dashboardName = name;
+			_dashboardFolder = NormalizeDashboardFolder(engine.GetScriptParam(11).Value);
+			return true;
+		}
+
+		private static string NormalizeDashboardFolder(string folder)
+		{
+			folder = folder?.Trim() ?? string.Empty;
+
+			if (folder == "/" || folder == "\\" || string.Equals(folder, "root", StringComparison.OrdinalIgnoreCase))
+			{
+				return string.Empty;
+			}
+
+			return folder;
 		}
 
 		private bool TryImportLCAID(IEngine engine)

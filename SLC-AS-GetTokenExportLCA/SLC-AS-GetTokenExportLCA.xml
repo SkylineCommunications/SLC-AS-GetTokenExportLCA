@@ -15,11 +15,14 @@
 	</Memory>
 
 	<Parameters>
-		<ScriptParameter id="10" type="string" values="">
-			<Description>LCA ID</Description>
+		<ScriptParameter id="10" type="string">
+			<Description>LCA ID / Dashboard Name</Description>
 		</ScriptParameter>
 		<ScriptParameter id="11" type="string" values="">
-			<Description>LCA Version</Description>
+			<Description>LCA Version / Dashboard Folder (use / for root)</Description>
+		</ScriptParameter>
+		<ScriptParameter id="12" type="string" values="">
+			<Description>Type</Description>
 		</ScriptParameter>
 	</Parameters>
 

@@ -68,6 +68,26 @@ namespace GetTokenExportLCA.Dataclasses
 			return response;
 		}
 
+		public async Task<string> GetTokenToExportDashboard(string connectionID, string dashboardName, string dashboardFolder)
+		{
+			var request = new ExportDashboardsRequest
+			{
+				Connection = connectionID,
+				Dashboards =
+				{
+					new DashboardReference
+					{
+						Name = dashboardName,
+						Folder = dashboardFolder ?? String.Empty,
+					},
+				},
+			};
+			var endpoint = $"{WebAPIOrigin}/api/v1/dashboards.asmx/ExportDashboards";
+			var response = await SendWebAPIRequest<string>(endpoint, request);
+
+			return response;
+		}
+
 		public async Task<T> SendWebAPIRequest<T>(string endpoint, object request)
 		{
 			var jsonRequest = JsonConvert.SerializeObject(request, JsonSerializerSettings);
